@@ -1,18 +1,18 @@
 import { NegociacoesView, MensagemView } from '../views/index';
 import { Negociacoes, Negociacao } from '../models/index';
-import { logarTempoDeExecucao } from '../helpers/decorators/index';
+import { domInject } from '../helpers/decorators/index';
 
 export class NegociacaoController {
+  @domInject('#data')
   private _inputData: JQuery;
+  @domInject('#quantidade')
   private _inputQuantidade: JQuery;
+  @domInject('#valor')
   private _inputValor: JQuery;
   private _negociacoes = new Negociacoes();
   private _negociacoesView = new NegociacoesView('#negociacoesView');
   private _mensagemView = new MensagemView('#mensagemView');
   constructor() {
-    this._inputData = $('#data');
-    this._inputQuantidade = $('#quantidade');
-    this._inputValor = $('#valor');
     this._negociacoesView.update(this._negociacoes);
   }
   adiciona(event: Event) {
@@ -28,12 +28,11 @@ export class NegociacaoController {
       parseFloat(this._inputValor.val()));
       
       this._negociacoes.adiciona(negociacao);
-      this._negociacoes.paraArray().forEach(negociacao => {
-        console.log(negociacao);
-      });
+      this._negociacoes.paraArray();
       this._negociacoesView.update(this._negociacoes);
       this._mensagemView.update('Negociação adicionada com sucesso!');
       this._limparFormulario();
+      console.log(negociacao);
   }
   private _limparFormulario() {
     this._inputData.val('');
